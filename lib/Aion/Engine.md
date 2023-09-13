@@ -1,6 +1,6 @@
 # NAME
 
-Aion::Str::Util - .
+Aion::Engine - a utilities for format numbers, colorizing output and so on
 
 # VERSION
 
@@ -9,16 +9,16 @@ Aion::Str::Util - .
 # SYNOPSIS
 
 ```perl
-use Aion::Str::Util;
+use Aion::Engine;
 
-my $aion_str_util = Aion::Str::Util->new();
+printcolor "\n", ;
 
 $aion_str_util  # -> 1
 ```
 
 # DESCRIPTION
 
-Aion::Str::Util — .
+Aion::Engine concentrate utilities from the submodules, as is Aion::Engine::Number, Aion::Engine::Sub, etc.
 
 # SUBROUTINES/METHODS
 
