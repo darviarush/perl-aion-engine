@@ -1,5 +1,6 @@
 package Aion::Format;
 use 5.22.0;
+no strict; no warnings; no diagnostics;
 use common::sense;
 
 our $VERSION = "0.0.0-prealpha";
@@ -10,6 +11,25 @@ require Exporter;
 our @EXPORT = our @EXPORT_OK = grep {
 	*{$Aion::Format::{$_}}{CODE} && !/^(_|(NaN|import)\z)/n
 } keys %Aion::Format::;
+
+use DDP {
+	colored => 1,
+	class => {
+		expand => "all",
+		inherited => "all",
+		show_reftype => 1,
+	},
+	deparse => 1,
+	show_unicode => 1,
+	show_readonly => 1,
+	print_escapes => 1,
+	#show_refcount => 1,
+	#show_memsize => 1,
+	caller_info => 1,
+	output => 'stdout',
+};
+
+#@category Цвет
 
 # Колоризирует текст escape-последовательностями: coloring("#{BOLD RED}ya#{}100!#RESET"), а затем - заменяет формат sprintf-ом
 sub sprintf($;@) {
