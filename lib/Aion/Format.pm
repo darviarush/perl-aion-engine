@@ -32,18 +32,6 @@ use DDP {
 #@category Цвет
 
 # Колоризирует текст escape-последовательностями: coloring("#{BOLD RED}ya#{}100!#RESET"), а затем - заменяет формат sprintf-ом
-sub sprintf($;@) {
-	my $format = shift;
-	$format =~ s!#\{([\w \t]*)\}|#(\w+)! Term::ANSIColor::color($1 // $2) !ge;
-	sprintf $format, @_
-}
-
-# Вернуть время модификации файла
-sub printf(@) {
-	my $format = shift;
-    print sprintf @_;
-}
-
 sub coloring(@) {
 	my $s = shift;
 	$s =~ s!#\{([\w \t]*)\}|#(\w+)! Term::ANSIColor::color($1 // $2) !ge;
