@@ -50,9 +50,9 @@ sub errorlog(@) {
 
 # Проводит соответствия
 #
-# replacement "...", qr/.../ => sub {...}, ...
+# matches "...", qr/.../ => sub {...}, ...
 #
-sub replacement(@) {
+sub matches(@) {
 	my $s = shift;
 	my $i = 0;
 	my $re = join "\n| ", map { $i++ % 2 == 0? "(?<I$i> $_ )": () } @_;
@@ -97,11 +97,13 @@ sub trans($) {
 	lc $s
 }
 
+#@category Транслитерация
+
 # Упрощённый язык регулярок
 sub nous($) {
 	my ($templates) = @_;
 	my $x = join "|", map {
-		replace $_,
+		matches $_,
 		# Срезаем все пробелы с конца:
 		qr!\s*$! => sub {},
 		# Срезаем все начальные строки:
