@@ -29,6 +29,28 @@ use DDP {
 	output => 'stdout',
 };
 
+#@category Ловушки
+
+# Ловушка для STDERR
+sub trapperr(&) {
+	my $sub = shift;
+	open my $old, ">&", \*STDERR or die "Can't dup STDERR: $!";
+	open \*STDERR, ">", \my $std or die "Can't open memory file: $!";
+	$sub->();
+	close \*STDERR;
+	open my $old, ">&", \*STDERR or die "Can't dup STDERR: $!";
+}
+
+# Ловушка для STDOUT
+sub trappout(&) {
+	my $sub = shift;
+	open my $old, ">&", \*STDOUT or die "Can't dup STDOUT: $!";
+	open \*STDERR, ">", \my $std or die "Can't open memory file: $!";
+	$sub->();
+	close \*STDERR;
+	open my $old, ">&", \*STDOUT or die "Can't dup STDOUT: $!";
+}
+
 #@category Цвет
 
 # Колоризирует текст escape-последовательностями: coloring("#{BOLD RED}ya#{}100!#RESET"), а затем - заменяет формат sprintf-ом
@@ -295,7 +317,6 @@ sub xxM { 16*MiB-1 }
 
 # Максимум в данных LongText Марии
 sub xxL { 4*GiB-1 }
-
 
 #@category Конверторы
 
