@@ -34,21 +34,21 @@ use DDP {
 # Ловушка для STDERR
 sub trapperr(&) {
 	my $sub = shift;
-	open my $old, ">&", \*STDERR or die "Can't dup STDERR: $!";
-	open \*STDERR, ">", \my $std or die "Can't open memory file: $!";
+	local *STDERR;
+	open STDERR, '>:utf8', \my $f;
 	$sub->();
-	close \*STDERR;
-	open my $old, ">&", \*STDERR or die "Can't dup STDERR: $!";
+	close STDERR;
+	$f
 }
 
 # Ловушка для STDOUT
 sub trappout(&) {
 	my $sub = shift;
-	open my $old, ">&", \*STDOUT or die "Can't dup STDOUT: $!";
-	open \*STDERR, ">", \my $std or die "Can't open memory file: $!";
+	local *STDOUT;
+	open STDOUT, '>:utf8', \my $f;
 	$sub->();
-	close \*STDERR;
-	open my $old, ">&", \*STDOUT or die "Can't dup STDOUT: $!";
+	close STDOUT;
+	$f
 }
 
 #@category Цвет
@@ -62,12 +62,12 @@ sub coloring(@) {
 
 # Для крона: Пишет в STDOUT
 sub accesslog(@) {
-	print "[", strftime("%F %T", localtime), "] ", sprintf @_;
+	print "[", strftime("%F %T", localtime), "] ", coloring @_;
 }
 
 # Для крона: Пишет в STDIN
 sub errorlog(@) {
-	print STDERR "[", strftime("%F %T", localtime), "] ", sprintf @_;
+	print STDERR "[", strftime("%F %T", localtime), "] ", coloring @_;
 }
 
 # Проводит соответствия
