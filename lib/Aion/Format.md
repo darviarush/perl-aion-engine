@@ -203,10 +203,16 @@ sinterval  .333 # => 333 ms
 
 ## sround ($number, $digits)
 
-Оставляет $n цифр до и после точки: 10.11 = 10, 0.00012 = 0.00012, 1.2345 = 1.2, если $n = 2
+Leaves `$digits` (0 does not count) wherever they are relative to the point.
+
+Default `$digits` is 2.
 
 ```perl
-sround($number, $digits)  # -> .3
+sround 10.11        # -> 10
+sround 100.11       # -> 100
+sround 0.00012      # -> 0.00012
+sround 1.2345       # -> 1.2
+sround 1.2345, 3    # -> 1.23
 ```
 
 ## trans ($s)
@@ -214,7 +220,7 @@ sround($number, $digits)  # -> .3
 Transliterates the russian text, leaving only Latin letters and dashes.
 
 ```perl
-trans ""  # => .3
+trans "Мир во всём Мире!"  # => .3
 ```
 
 ## transliterate ($s)
@@ -276,6 +282,7 @@ KiB  # -> 2**10
 ## xxL ()
 
 Maximum length in data LongText mysql and mariadb.
+L - large.
 
 ```perl
 xxL  # -> 4*GiB-1
@@ -284,27 +291,28 @@ xxL  # -> 4*GiB-1
 ## xxM ()
 
 Maximum length in data MediumText mysql and mariadb.
+M - medium.
 
 ```perl
-xxM  # -> .3
+xxM  # -> 16*MiB-1
 ```
 
 ## xxR ()
 
-Максимум в данных Text Марии
+Maximum length in data Text mysql and mariadb.
+R - regularity.
 
 ```perl
-my $aion_format = Aion::Format->new;
-$aion_format->xxR  # -> .3
+xxR  # -> 64*KiB-1
 ```
 
 ## xxS ()
 
-Максимум в данных TinyText Марии
+Maximum length in data TinyText mysql and mariadb.
+S - small.
 
 ```perl
-my $aion_format = Aion::Format->new;
-$aion_format->xxS  # -> .3
+xxS  # 255
 ```
 
 # SUBROUTINES/METHODS
