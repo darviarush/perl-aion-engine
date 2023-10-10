@@ -182,6 +182,7 @@ rim 505     # => DV
 ```perl
 rim 49_000      # => IL M
 rim 49_000_000  # => IL M M
+rim 49_009_555  # => IL M M
 ```
 
 ## round ($number, $decimal)
