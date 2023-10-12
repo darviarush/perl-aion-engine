@@ -42,7 +42,7 @@ safe_html "-<embedded><br>-" # => -<br>-
 Breaks text into pages taking into account html tags.
 
 ```perl
-[split_on_pages "Alice in wonderland. Book", 20]  # --> ["Alice in wonderland.", "Book"]
+[split_on_pages "Alice in wonderland. Book", 17]  # --> ["Alice in wonderland.", "Book"]
 ```
 
 # AUTHOR
