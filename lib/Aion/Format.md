@@ -39,6 +39,10 @@ As `coloring`, but it print formatted string.
 
 As `coloring`, but print formatted string to `STDERR`.
 
+```perl
+trapperr { warncolor "#{green}ACCESS#r %i\n", 6 }  # => \e[32mACCESS\e[0m 6\n
+```
+
 ## accesslog ($format, @params)
 
 It write in STDOUT `coloring` returns with prefix datetime.
@@ -52,7 +56,7 @@ trappout { accesslog "#{green}ACCESS#r %i\n", 6 }  # ~> \[\d{4}-\d{2}-\d{2} \d\d
 It write in STDERR `coloring` returns with prefix datetime.
 
 ```perl
-trapperr { errorlog "#{red}ERROR#r %i\n", 6 }  # => ~> \[\d{4}-\d{2}-\d{2} \d\d:\d\d:\d\d\] \e\[31mERROR\e\[0m 6\n
+trapperr { errorlog "#{red}ERROR#r %i\n", 6 }  # ~> \[\d{4}-\d{2}-\d{2} \d\d:\d\d:\d\d\] \e\[31mERROR\e\[0m 6\n
 ```
 
 ## flesch_index_human ($flesch_index)
@@ -60,12 +64,14 @@ trapperr { errorlog "#{red}ERROR#r %i\n", 6 }  # => ~> \[\d{4}-\d{2}-\d{2} \d\d:
 Convert flesch index to russian label with step 10.
 
 ```perl
-flesch_index_human -0.1  # => несвязный русский текст
+flesch_index_human -10   # => несвязный русский текст
+flesch_index_human -3    # => для академиков
 flesch_index_human 0     # => для академиков
 flesch_index_human 1     # => для академиков
 flesch_index_human 15    # => для профессионалов
+flesch_index_human 99    # => для 11 лет (уровень 5-го класса)
 flesch_index_human 100   # => для младшеклассников
-flesch_index_human 100.1 # => несвязный русский текст
+flesch_index_human 110   # => несвязный русский текст
 ```
 
 ## from_radix ($string, $radix)

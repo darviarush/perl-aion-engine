@@ -39,6 +39,10 @@ done_testing; }; subtest 'coloring ($format, @params)' => sub {
 # 
 # As `coloring`, but print formatted string to `STDERR`.
 # 
+done_testing; }; subtest 'warncolor ($format, @params)' => sub { 
+::is scalar do {trapperr { warncolor "#{green}ACCESS#r %i\n", 6 }}, "\e[32mACCESS\e[0m 6\n", 'trapperr { warncolor "#{green}ACCESS#r %i\n", 6 }  # => \e[32mACCESS\e[0m 6\n';
+
+# 
 # ## accesslog ($format, @params)
 # 
 # It write in STDOUT `coloring` returns with prefix datetime.
@@ -52,7 +56,7 @@ done_testing; }; subtest 'accesslog ($format, @params)' => sub {
 # It write in STDERR `coloring` returns with prefix datetime.
 # 
 done_testing; }; subtest 'errorlog ($format, @params)' => sub { 
-::is scalar do {trapperr { errorlog "#{red}ERROR#r %i\n", 6 }}, "~> \[\d{4}-\d{2}-\d{2} \d\d:\d\d:\d\d\] \e\[31mERROR\e\[0m 6\n", 'trapperr { errorlog "#{red}ERROR#r %i\n", 6 }  # => ~> \[\d{4}-\d{2}-\d{2} \d\d:\d\d:\d\d\] \e\[31mERROR\e\[0m 6\n';
+::like scalar do {trapperr { errorlog "#{red}ERROR#r %i\n", 6 }}, qr!\[\d{4}-\d{2}-\d{2} \d\d:\d\d:\d\d\] \e\[31mERROR\e\[0m 6\n!, 'trapperr { errorlog "#{red}ERROR#r %i\n", 6 }  # ~> \[\d{4}-\d{2}-\d{2} \d\d:\d\d:\d\d\] \e\[31mERROR\e\[0m 6\n';
 
 # 
 # ## flesch_index_human ($flesch_index)
@@ -60,12 +64,14 @@ done_testing; }; subtest 'errorlog ($format, @params)' => sub {
 # Convert flesch index to russian label with step 10.
 # 
 done_testing; }; subtest 'flesch_index_human ($flesch_index)' => sub { 
-::is scalar do {flesch_index_human -0.1}, "несвязный русский текст", 'flesch_index_human -0.1  # => несвязный русский текст';
+::is scalar do {flesch_index_human -10}, "несвязный русский текст", 'flesch_index_human -10   # => несвязный русский текст';
+::is scalar do {flesch_index_human -3}, "для академиков", 'flesch_index_human -3    # => для академиков';
 ::is scalar do {flesch_index_human 0}, "для академиков", 'flesch_index_human 0     # => для академиков';
 ::is scalar do {flesch_index_human 1}, "для академиков", 'flesch_index_human 1     # => для академиков';
 ::is scalar do {flesch_index_human 15}, "для профессионалов", 'flesch_index_human 15    # => для профессионалов';
+::is scalar do {flesch_index_human 99}, "для 11 лет (уровень 5-го класса)", 'flesch_index_human 99    # => для 11 лет (уровень 5-го класса)';
 ::is scalar do {flesch_index_human 100}, "для младшеклассников", 'flesch_index_human 100   # => для младшеклассников';
-::is scalar do {flesch_index_human 100.1}, "несвязный русский текст", 'flesch_index_human 100.1 # => несвязный русский текст';
+::is scalar do {flesch_index_human 110}, "несвязный русский текст", 'flesch_index_human 110   # => несвязный русский текст';
 
 # 
 # ## from_radix ($string, $radix)

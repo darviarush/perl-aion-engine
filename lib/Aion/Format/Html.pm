@@ -1518,7 +1518,7 @@ Cuts off dangerous and unknown tags from html, and unknown attributes from known
 
 Breaks text into pages taking into account html tags.
 
-	[split_on_pages "Alice in wonderland. Book", 20]  # --> ["Alice in wonderland.", "Book"]
+	[split_on_pages "Alice in wonderland. This is book", 17]  # --> ["Alice in wonderland. ", "This is book"]
 
 =head1 AUTHOR
 

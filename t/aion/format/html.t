@@ -42,7 +42,7 @@ done_testing; }; subtest 'safe_html ($html)' => sub {
 # Breaks text into pages taking into account html tags.
 # 
 done_testing; }; subtest 'split_on_pages ($html, $symbols_on_page, $by)' => sub { 
-::is_deeply scalar do {[split_on_pages "Alice in wonderland. Book", 20]}, scalar do {["Alice in wonderland.", "Book"]}, '[split_on_pages "Alice in wonderland. Book", 20]  # --> ["Alice in wonderland.", "Book"]';
+::is_deeply scalar do {[split_on_pages "Alice in wonderland. This is book", 17]}, scalar do {["Alice in wonderland. ", "This is book"]}, '[split_on_pages "Alice in wonderland. This is book", 17]  # --> ["Alice in wonderland. ", "This is book"]';
 
 # 
 # # AUTHOR
