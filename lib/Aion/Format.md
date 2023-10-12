@@ -9,9 +9,12 @@ Aion::Format - a utilities for format numbers, colorizing output and so on
 # SYNOPSIS
 
 ```perl
-use Aion::Engine;
+use Aion::Format;
 
-trappout { printcolor "\n",  } # => 123
+trappout { print "123\n" } # => 123\n
+
+coloring "#red ~> #r\n" # => \e[31m ~> \e[0m\n
+trappout { printcolor "#red ~> #r\n" } # => \e[31m ~> \e[0m\n
 ```
 
 # DESCRIPTION
@@ -20,12 +23,28 @@ A utilities for format numbers, colorizing output and so on.
 
 # SUBROUTINES/METHODS
 
+## coloring ($format, @params)
+
+Colorizes the text with escape sequences, and then replaces the format with sprintf. Color names using from module `Term::ANSIColor`. For `RESET` use `#r` or `#R`.
+
+```perl
+coloring "#{BOLD RED}###r %i", 6 # => \e[1;31m##\e[0m 6
+```
+
+## printcolor ($format, @params)
+
+As `coloring`, but it print formatted string.
+
+## warncolor ($format, @params)
+
+As `coloring`, but print formatted string to `STDERR`.
+
 ## accesslog ($format, @params)
 
 It write in STDOUT `coloring` returns with prefix datetime.
 
 ```perl
-trappout { accesslog "#{green}ASSESS#r %i\n", 6 }  # => .3
+trappout { accesslog "#{green}ACCESS#r %i\n", 6 }  # ~> \[\d{4}-\d{2}-\d{2} \d\d:\d\d:\d\d\] \e\[32mACCESS\e\[0m 6\n
 ```
 
 ## errorlog ($format, @params)
@@ -33,15 +52,7 @@ trappout { accesslog "#{green}ASSESS#r %i\n", 6 }  # => .3
 It write in STDERR `coloring` returns with prefix datetime.
 
 ```perl
-trapperr { errorlog "#{red}ERROR#r %i\n", 6 }  # => .3
-```
-
-## coloring ($format, @params)
-
-Colorizes the text with escape sequences, and then replaces the format with sprintf. Color names using from module ``. For `RESET` use `#r`.
-
-```perl
-coloring "#{BOLD RED}###r %i", 6 # -> .3
+trapperr { errorlog "#{red}ERROR#r %i\n", 6 }  # => ~> \[\d{4}-\d{2}-\d{2} \d\d:\d\d:\d\d\] \e\[31mERROR\e\[0m 6\n
 ```
 
 ## flesch_index_human ($flesch_index)
@@ -49,7 +60,12 @@ coloring "#{BOLD RED}###r %i", 6 # -> .3
 Convert flesch index to russian label with step 10.
 
 ```perl
-flesch_index_human 0  # => для академиков
+flesch_index_human -0.1  # => несвязный русский текст
+flesch_index_human 0     # => для академиков
+flesch_index_human 1     # => для академиков
+flesch_index_human 15    # => для профессионалов
+flesch_index_human 100   # => для младшеклассников
+flesch_index_human 100.1 # => несвязный русский текст
 ```
 
 ## from_radix ($string, $radix)
@@ -57,9 +73,9 @@ flesch_index_human 0  # => для академиков
 Parses a natural number in the specified number system. 64-number system used by default.
 
 ```perl
-from_radix "A-C" # -> .3
-from_radix "A-C", 64 # -> .3
-from_radix "A-C", 255 # -> .3
+from_radix "A-C" # -> 45004
+from_radix "A-C", 64 # -> 45004
+from_radix "A-C", 255 # -> 666327
 ```
 
 ## to_radix ($number, $radix)
@@ -67,9 +83,9 @@ from_radix "A-C", 255 # -> .3
 Converts a natural number to a given number system. 64-number system used by default.
 
 ```perl
-to_radix 10_000 # -> .3
-to_radix 10_000, 64 # -> .3
-to_radix 10_000, 255 # -> .3
+to_radix 10_000 # => 2SG
+to_radix 10_000, 64 # => 2SG
+to_radix 10_000, 255 # => dt
 ```
 
 ## kb_size ($number)
@@ -77,11 +93,11 @@ to_radix 10_000, 255 # -> .3
 Adds number digits and adds a unit of measurement.
 
 ```perl
-kb_size 102             # -> 102b
-kb_size 1024            # -> 1k
-kb_size 1023            # -> 1k
-kb_size 1024*1024       # -> 1M
-kb_size 1000_002_000_001_000    # -> 1 000G
+kb_size 102             # => 102b
+kb_size 1024            # => 1k
+kb_size 1023            # => 1\x{a0}023b
+kb_size 1024*1024       # => 1M
+kb_size 1000_002_000_001_000    # => 931\x{a0}324G
 ```
 
 ## matches ($subject, @rules)
@@ -151,8 +167,8 @@ This book text!
 };
 
 $s =~ $re;
-my $result = join ", ", map "$_ -> $+{$_}", sort keys %+;
-$result # /to/book/link
+my $result = {%+};
+$result # --> {author_link => "/to/book/link", author_name => "A. Alis", title => "Grivus campf"}
 ```
 
 ## num ($number)
@@ -160,9 +176,17 @@ $result # /to/book/link
 Adds separators between digits of a number.
 
 ```perl
-num +0          # -> 0
-num -1000.3    # -> -1 000.3
+num +0         # => 0
+num -1000.3    # => -1 000.3
 ```
+
+Separator by default is no-break space. Set separator and decimal point same as:
+
+```perl
+num [1000, "#"]         		# => 1#000
+num [-1000.3003003, "_", ","]   # => -1_000,3003003
+```
+
 
 ## rim ($number)
 
@@ -173,16 +197,16 @@ rim 0       # => N
 rim 4       # => IV
 rim 6       # => VI
 rim 50      # => L
-rim 49      # => IL
+rim 49      # => XLIX
 rim 505     # => DV
 ```
 
 **roman numerals** after 1000:
 
 ```perl
-rim 49_000      # => IL M
-rim 49_000_000  # => IL M M
-rim 49_009_555  # => IL M M
+rim 49_000      # => XLIX M
+rim 49_000_000  # => XLIX M M
+rim 49_009_555  # => XLIX IX DLV
 ```
 
 ## round ($number, $decimal)
@@ -198,8 +222,14 @@ round 1.235567, 2  # -> 1.24
 
 Generates human-readable spacing.
 
+Width of result is 12 symbols.
+
 ```perl
-sinterval  .333 # => 333 ms
+sinterval  6666.6666 	# => 01:51:06.667
+sinterval  6.6666 		# => 00:00:06.667
+sinterval  .333 		# => 0.33300000 s
+sinterval  .000_33 		# => 0.3300000 ms
+sinterval  .000_000_33 	# => 0.330000 mks
 ```
 
 ## sround ($number, $digits)
@@ -221,7 +251,7 @@ sround 1.2345, 3    # -> 1.23
 Transliterates the russian text, leaving only Latin letters and dashes.
 
 ```perl
-trans "Мир во всём Мире!"  # => .3
+trans "Мир во всём Мире!"  # => mir-vo-vsjom-mire
 ```
 
 ## transliterate ($s)
@@ -229,7 +259,7 @@ trans "Мир во всём Мире!"  # => .3
 Transliterates the russian text.
 
 ```perl
-transliterate "Мир во всём Мире!"  # => Mir
+transliterate "Мир во всём Мире!"  # => Mir vo vsjom Mire!
 ```
 
 ## trapperr (&block)
@@ -313,7 +343,7 @@ Maximum length in data TinyText mysql and mariadb.
 S - small.
 
 ```perl
-xxS  # 255
+xxS  # -> 255
 ```
 
 # SUBROUTINES/METHODS

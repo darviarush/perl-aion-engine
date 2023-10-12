@@ -1,81 +1,48 @@
 # NAME
 
-Aion::Format::Html - 
+Aion::Format::Html - a utilities for format HTML-documents
 
 # SYNOPSIS
 
 ```perl
 use Aion::Format::Html;
 
-my $aion_format_html = Aion::Format::Html->new;
+from_html "&excl;"  # => !
+to_html "<a>"       # => &lt;a&gt;
 ```
 
 # DESCRIPION
 
-.
+A utilities for format HTML-documents.
 
 # SUBROUTINES
 
-## html2text ()
+## from_html ($html)
 
-переводит html в text
+Converts html to text.
 
 ```perl
-my $aion_format_html = Aion::Format::Html->new;
-$aion_format_html->html2text  # -> .3
+from_html "Basic is <b>superlanguage</b>!<br>"  # => Basic is superlanguage!\n
 ```
 
-## in_tag ($S, $tag, $atag)
+## to_html ($html)
 
-Забрасывает тег в стек
+Escapes html characters.
 
-```perl
-my $aion_format_html = Aion::Format::Html->new;
-$aion_format_html->in_tag($S, $tag, $atag)  # -> .3
-```
+## safe_html ($html)
 
-## out_tag ($S, $tag)
-
-Неявно использует $_
+Cuts off dangerous and unknown tags from html, and unknown attributes from known tags.
 
 ```perl
-my $aion_format_html = Aion::Format::Html->new;
-$aion_format_html->out_tag($S, $tag)  # -> .3
-```
-
-## safe4html ()
-
-срезает у html-я опасные, а так же неведомые теги
-
-```perl
-my $aion_format_html = Aion::Format::Html->new;
-$aion_format_html->safe4html  # -> .3
+safe_html "-<embedded><br>-" # => -<br>-
 ```
 
 ## split_on_pages ($html, $symbols_on_page, $by)
 
-.
+Breaks text into pages taking into account html tags.
 
 ```perl
-my $aion_format_html = Aion::Format::Html->new;
-$aion_format_html->split_on_pages($html, $symbols_on_page, $by)  # -> .3
-```
-
-## summary ()
-
-.
-
-```perl
-my $aion_format_html = Aion::Format::Html->new;
-$aion_format_html->summary  # -> .3
-```
-
-# INSTALL
-
-For install this module in your system run next [command](https://metacpan.org/pod/App::cpm):
-
-```sh
-sudo cpm install -gvv Aion::Format::Html
+[split_on_pages "Alice in wonderland. Book", 20]  # --> ["Alice in wonderland.", "Book"]
 ```
 
 # AUTHOR

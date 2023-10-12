@@ -2,6 +2,18 @@ package Aion::Format::Html;
 
 use common::sense;
 
+use Exporter qw/import/;
+our @EXPORT = our @EXPORT_OK = grep {
+	*{$Aion::Format::Html::{$_}}{CODE} && !/^(_|(NaN|import)\z)/n
+} keys %Aion::Format::Html::;
+
+# Экранирует символы html
+my %HTML_SIM = qw/< &lt; > &gt; & &amp; \' &#39; " &quot;/;
+sub to_html (@) {
+	local $_ = join "", @_;
+	s/[<>&\'\"]/$HTML_SIM{$&}/ge;
+	$_
+}
 
 our %ENTITIES = (
 #
@@ -1080,7 +1092,7 @@ our %TOP_NEW_TAG = (
 );
 
 # Забрасывает тег в стек
-sub in_tag(@) {
+sub _in_tag(@) {
 	my ($S, $tag, $atag) = @_;
 	
 	# Это одиночный тег - ничего не делаем
@@ -1094,7 +1106,7 @@ sub in_tag(@) {
 
 # Выбрасывает тег из стека
 # Неявно использует $_
-sub out_tag(@) {
+sub _out_tag(@) {
 	my ($S, $tag) = @_;
 	
 	# Это одиночный тег - ничего не делаем
@@ -1150,8 +1162,8 @@ sub split_on_pages(@) {
 	)}xiu, $html) {
 
 		if(/^&/) {$c++} 	# html-символ
-		elsif(/^<\/\s*([a-z]\w*)/) { next unless out_tag \@S, lc $1 }	# закрывающий тег
-		elsif(/^<([a-z]\w*)/) { in_tag \@S, lc $1, $_ }	# тег
+		elsif(/^<\/\s*([a-z]\w*)/) { next unless _out_tag \@S, lc $1 }	# закрывающий тег
+		elsif(/^<([a-z]\w*)/) { _in_tag \@S, lc $1, $_ }	# тег
 		else {$c += length}	# текст
 
 		push @page, $_; # накапливаем символы в массиве @page
@@ -1219,7 +1231,7 @@ our %WITH_CLOSE_TAG2SPACE = (
 
 
 # переводит html в text
-sub html2text {
+sub from_html {
 	local ($_) = @_;
 
 	# 1. Убираем энтитиес:
@@ -1228,12 +1240,12 @@ sub html2text {
 		exists $+{num}? chr $+{num}:
 		exists $+{hex}? chr hex $+{hex}: ""
 	};
-	s!&(
+	s{&(
 		(?<word>\w+)
 		|\#(?<num>\d+)
 		|\#x(?<hex>[a-f\d]+)
 	);?
-	!$ent->()!genix;
+	}{$ent->()}genix;
 
 	my $pre;
 
@@ -1259,8 +1271,9 @@ sub html2text {
 		
 		my $s2 = $pre? $+{s2}: ($+{s2} eq "" || $s1? "": " ");
 		
-		$x =~ /\n/? $x: join "", $s1, $x, $s2
+		$x =~ /\n/ ? $x: join "", $s1, $x, $s2
 	};
+
 	s{
 		(?<s1> \s*) (
 		
@@ -1435,7 +1448,7 @@ coords
 /;
 
 # срезает у html-я опасные, а так же неведомые теги
-sub safe4html {
+sub safe_html {
 	(local $_, my $link) = @_;
 
 	my $f = sub {
@@ -1463,3 +1476,58 @@ sub safe4html {
 }
 
 1;
+
+__END__
+
+=encoding utf-8
+
+=head1 NAME
+
+Aion::Format::Html - a utilities for format HTML-documents
+
+=head1 SYNOPSIS
+
+	use Aion::Format::Html;
+	
+	from_html "&excl;"  # => !
+	to_html "<a>"       # => &lt;a&gt;
+
+=head1 DESCRIPION
+
+A utilities for format HTML-documents.
+
+=head1 SUBROUTINES
+
+=head2 from_html ($html)
+
+Converts html to text.
+
+	from_html "Basic is <b>superlanguage</b>!<br>"  # => Basic is superlanguage!\n
+
+=head2 to_html ($html)
+
+Escapes html characters.
+
+=head2 safe_html ($html)
+
+Cuts off dangerous and unknown tags from html, and unknown attributes from known tags.
+
+	safe_html "-<embedded><br>-" # => -<br>-
+
+=head2 split_on_pages ($html, $symbols_on_page, $by)
+
+Breaks text into pages taking into account html tags.
+
+	[split_on_pages "Alice in wonderland. Book", 20]  # --> ["Alice in wonderland.", "Book"]
+
+=head1 AUTHOR
+
+Yaroslav O. Kosmina LL<mailto:darviarush@mail.ru>
+
+=head1 LICENSE
+
+⚖ B<GPLv3>
+
+=head1 COPYRIGHT
+
+The Aion::Format::Html module is copyright © 2023 Yaroslav O. Kosmina. Rusland. All rights reserved.
