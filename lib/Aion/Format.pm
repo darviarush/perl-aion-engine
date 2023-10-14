@@ -195,11 +195,11 @@ our $CIF = join "", "0".."9", "A".."Z", "a".."z", "_-", # 64 символа дл
 	# символ 152 (0x98) в cp1251 отсутствует.
 ;
 # Переводит натуральное число в заданную систему счисления
-sub to_radix(@) {
+sub to_radix($;$) {
 	use bigint;
 	my ($n, $radix) = @_;
 	$radix //= 64;
-	die "to_radix: Слишком большая система счисления $radix. Используйте СС до " . (1 + length $CIF) if $radix > length $CIF;
+	die "to_radix: The number system is too large ($radix). Using number system before " . (1 + length $CIF) if $radix > length $CIF;
 	$n+=0; $radix+=0;
 	my $x = "";
 	for(;;) {
