@@ -78,10 +78,13 @@ done_testing; }; subtest 'flesch_index_human ($flesch_index)' => sub {
 # 
 # Parses a natural number in the specified number system. 64-number system used by default.
 # 
+# For digits using symbols 0-9, A-Z, a-z, _ and -. This symbols using before and for 64 NS. For digits after 64 using symbols from CP1251 encoding.
+# 
 done_testing; }; subtest 'from_radix ($string, $radix)' => sub { 
 ::is scalar do {from_radix "A-C"}, scalar do{45004}, 'from_radix "A-C" # -> 45004';
 ::is scalar do {from_radix "A-C", 64}, scalar do{45004}, 'from_radix "A-C", 64 # -> 45004';
 ::is scalar do {from_radix "A-C", 255}, scalar do{666327}, 'from_radix "A-C", 255 # -> 666327';
+::like scalar do {eval { from_radix "A-C", 256 }; $@}, qr!The number system 256 is too large. Use NS before 256!, 'eval { from_radix "A-C", 256 }; $@ 	# ~> The number system 256 is too large. Use NS before 256';
 
 # 
 # ## to_radix ($number, $radix)
@@ -89,9 +92,10 @@ done_testing; }; subtest 'from_radix ($string, $radix)' => sub {
 # Converts a natural number to a given number system. 64-number system used by default.
 # 
 done_testing; }; subtest 'to_radix ($number, $radix)' => sub { 
-::is scalar do {to_radix 10_000}, "2SG", 'to_radix 10_000 # => 2SG';
-::is scalar do {to_radix 10_000, 64}, "2SG", 'to_radix 10_000, 64 # => 2SG';
-::is scalar do {to_radix 10_000, 255}, "dt", 'to_radix 10_000, 255 # => dt';
+::is scalar do {to_radix 10_000}, "2SG", 'to_radix 10_000 				# => 2SG';
+::is scalar do {to_radix 10_000, 64}, "2SG", 'to_radix 10_000, 64 			# => 2SG';
+::is scalar do {to_radix 10_000, 255}, "dt", 'to_radix 10_000, 255 			# => dt';
+::like scalar do {eval { to_radix 0, 256 }; $@}, qr!The number system 256 is too large. Use NS before 256!, 'eval { to_radix 0, 256 }; $@ 	# ~> The number system 256 is too large. Use NS before 256';
 
 # 
 # ## kb_size ($number)
@@ -137,7 +141,7 @@ my $re = nous [
 q{
 	<body>
 	<center>
-	<h2><a href={{ author_link }}>{{ author_name }}</a><br>
+	<h2><a href={{> author_link }}>{{: author_name }}</a><br>
 	{{ title }}</h2>
 },
 q{

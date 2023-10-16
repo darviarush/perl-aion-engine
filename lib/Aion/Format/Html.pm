@@ -1512,7 +1512,10 @@ Escapes html characters.
 
 Cuts off dangerous and unknown tags from html, and unknown attributes from known tags.
 
-	safe_html "-<embedded><br>-" # => -<br>-
+	safe_html "-<em>-</em><br>-" # => -<em>-</em><br>-
+	safe_html "-<em onclick='  '>-</em><br onmouseout=1>-" # => -<em>-</em><br>-
+	safe_html "-<xx24>-</xx24>" # => --
+	safe_html "-< applet >-</ applet >" # => --
 
 =head2 split_on_pages ($html, $symbols_on_page, $by)
 

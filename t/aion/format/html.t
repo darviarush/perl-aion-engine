@@ -34,7 +34,10 @@ done_testing; }; subtest 'from_html ($html)' => sub {
 # Cuts off dangerous and unknown tags from html, and unknown attributes from known tags.
 # 
 done_testing; }; subtest 'safe_html ($html)' => sub { 
-::is scalar do {safe_html "-<embedded><br>-"}, "-<br>-", 'safe_html "-<embedded><br>-" # => -<br>-';
+::is scalar do {safe_html "-<em>-</em><br>-"}, "-<em>-</em><br>-", 'safe_html "-<em>-</em><br>-" # => -<em>-</em><br>-';
+::is scalar do {safe_html "-<em onclick='  '>-</em><br onmouseout=1>-"}, "-<em>-</em><br>-", 'safe_html "-<em onclick=\'  \'>-</em><br onmouseout=1>-" # => -<em>-</em><br>-';
+::is scalar do {safe_html "-<xx24>-</xx24>"}, "--", 'safe_html "-<xx24>-</xx24>" # => --';
+::is scalar do {safe_html "-< applet >-</ applet >"}, "--", 'safe_html "-< applet >-</ applet >" # => --';
 
 # 
 # ## split_on_pages ($html, $symbols_on_page, $by)

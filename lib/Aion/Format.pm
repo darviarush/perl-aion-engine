@@ -58,11 +58,11 @@ sub trappout(&) {
 # Колоризирует текст escape-последовательностями: coloring("#{BOLD RED}ya#{}100!#RESET"), а затем - заменяет формат sprintf-ом
 sub coloring(@) {
 	my $s = shift;
-	$s =~ s!#\{([\w \t]*)\}|#(\w+)!
-		my $x = $1 // $2;
+	$s =~ s!#\{(?<x>[\w \t]*)\}|#(?<x>\w+)!
+		my $x = $+{x};
 		$x = "RESET" if $x ~~ [qw/r R/];
 		Term::ANSIColor::color($x)
-	!ge;
+	!nge;
 	sprintf $s, @_
 }
 
@@ -237,7 +237,7 @@ sub to_radix(@) {
 	use bigint;
 	my ($n, $radix) = @_;
 	$radix //= 64;
-	die "to_radix: Слишком большая система счисления $radix. Используйте СС до " . (1 + length $CIF) if $radix > length $CIF;
+	die "to_radix: The number system $radix is too large. Use NS before " . (1 + length $CIF) if $radix > length $CIF;
 	$n+=0; $radix+=0;
 	my $x = "";
 	for(;;) {
@@ -255,7 +255,7 @@ sub from_radix(@) {
 	my ($s, $radix) = @_;
 	$radix //= 64;
 	$radix+=0;
-	die "from_radix: Слишком большая система счисления $radix. Используйте СС до " . length $CIF if $radix > length $CIF;
+	die "from_radix: The number system $radix is too large. Use NS before " . (1 + length $CIF) if $radix > length $CIF;
 	my $x = 0;
 	for my $ch (split "", $s) {
 		$x = $x*$radix + index $CIF, $ch;
@@ -435,17 +435,21 @@ Convert flesch index to russian label with step 10.
 
 Parses a natural number in the specified number system. 64-number system used by default.
 
+For digits using symbols 0-9, A-Z, a-z, _ and -. This symbols using before and for 64 NS. For digits after 64 using symbols from CP1251 encoding.
+
 	from_radix "A-C" # -> 45004
 	from_radix "A-C", 64 # -> 45004
 	from_radix "A-C", 255 # -> 666327
+	eval { from_radix "A-C", 256 }; $@ 	# ~> The number system 256 is too large. Use NS before 256
 
 =head2 to_radix ($number, $radix)
 
 Converts a natural number to a given number system. 64-number system used by default.
 
-	to_radix 10_000 # => 2SG
-	to_radix 10_000, 64 # => 2SG
-	to_radix 10_000, 255 # => dt
+	to_radix 10_000 				# => 2SG
+	to_radix 10_000, 64 			# => 2SG
+	to_radix 10_000, 255 			# => dt
+	eval { to_radix 0, 256 }; $@ 	# ~> The number system 256 is too large. Use NS before 256
 
 =head2 kb_size ($number)
 
@@ -495,7 +499,7 @@ A simplified regex language for text recognition in HTML documents.
 	q{
 		<body>
 		<center>
-		<h2><a href={{ author_link }}>{{ author_name }}</a><br>
+		<h2><a href={{> author_link }}>{{: author_name }}</a><br>
 		{{ title }}</h2>
 	},
 	q{
