@@ -11,6 +11,7 @@ on 'test' => sub {
 };
 
 requires 'common::sense';
+requires 'JSON::XS', '4.03';
 requires 'POSIX';
 requires 'Term::ANSIColor';
 requires 'Data::Printer';

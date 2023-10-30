@@ -1,6 +1,6 @@
 # NAME
 
-Aion::Format - a utilities for format numbers, colorizing output and so on
+Aion::Format - Perl extension for formatting numbers, colorizing output and so on
 
 # VERSION
 
@@ -19,7 +19,7 @@ trappout { printcolor "#red ~> #r\n" } # => \e[31m ~> \e[0m\n
 
 # DESCRIPTION
 
-A utilities for format numbers, colorizing output and so on.
+A utilities for formatting numbers, colorizing output and so on.
 
 # SUBROUTINES/METHODS
 
@@ -197,6 +197,7 @@ num [1000, "#"]         		# => 1#000
 num [-1000.3003003, "_", ","]   # => -1_000,3003003
 ```
 
+See also `Number::Format`.
 
 ## rim ($number)
 
@@ -218,6 +219,8 @@ rim 49_000      # => XLIX M
 rim 49_000_000  # => XLIX M M
 rim 49_009_555  # => XLIX IX DLV
 ```
+
+See also 
 
 ## round ($number, $decimal)
 

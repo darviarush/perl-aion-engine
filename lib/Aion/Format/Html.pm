@@ -1399,7 +1399,7 @@ small
 span
 strike
 strong
-sub
+   sub
 summary
 sup
 
@@ -1448,7 +1448,7 @@ coords
 /;
 
 # срезает у html-я опасные, а так же неведомые теги
-sub safe_html {
+sub safe_html($;$) {
 	(local $_, my $link) = @_;
 
 	my $f = sub {
@@ -1523,9 +1523,50 @@ Breaks text into pages taking into account html tags.
 
 	[split_on_pages "Alice in wonderland. This is book", 17]  # --> ["Alice in wonderland. ", "This is book"]
 
+=head2 summary ()
+
+.
+
+	my $aion_format_html = Aion::Format::Html->new;
+	$aion_format_html->summary  # -> .3
+
 =head1 AUTHOR
 
 Yaroslav O. Kosmina LL<mailto:darviarush@mail.ru>
+
+=head1 LICENSE
+
+⚖ B<GPLv3>
+
+=head1 COPYRIGHT
+
+The Aion::Format::Html module is copyright © 2023 Yaroslav O. Kosmina. Rusland. All rights reserved.
+=head1 NAME
+
+Aion::Format::Html - 
+
+=head1 SYNOPSIS
+
+	use Aion::Format::Html;
+	
+	my $aion_format_html = Aion::Format::Html->new;
+
+=head1 DESCRIPION
+
+.
+
+=head1 SUBROUTINES
+
+=head2 split_on_pages ($html, $symbols_on_page, $by)
+
+.
+
+	my $aion_format_html = Aion::Format::Html->new;
+	$aion_format_html->split_on_pages($html, $symbols_on_page, $by)  # -> .3
+
+=head1 AUTHOR
+
+Yaroslav O. Kosmina LL<mailto:dart@cpan.org>
 
 =head1 LICENSE
 

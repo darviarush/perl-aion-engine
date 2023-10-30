@@ -295,11 +295,11 @@ sub num($) {
 # Добавляет разряды чисел и добавляет единицу измерения
 sub kb_size($) {
 	my ($n) = @_;
-	
+
 	return num(round($n / 1024 / 1024 / 1024)) . "G" if $n >= 1024 * 1024 * 1024;
 	return num(round($n / 1024 / 1024)) . "M" if $n >= 1024 * 1024;
 	return num(round($n / 1024)) . "k" if $n >= 1024;
-	
+
 	return num(round($n)) . "b";
 }
 
@@ -686,4 +686,4 @@ Yaroslav O. Kosmina LL<mailto:dart@cpan.org>
 
 =head1 COPYRIGHT
 
-The  is copyright © 2023 by Yaroslav O. Kosmina. Rusland. All rights reserved.
+Aion::Format is copyright © 2023 by Yaroslav O. Kosmina. Rusland. All rights reserved.

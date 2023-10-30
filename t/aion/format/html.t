@@ -48,9 +48,58 @@ done_testing; }; subtest 'split_on_pages ($html, $symbols_on_page, $by)' => sub 
 ::is_deeply scalar do {[split_on_pages "Alice in wonderland. This is book", 17]}, scalar do {["Alice in wonderland. ", "This is book"]}, '[split_on_pages "Alice in wonderland. This is book", 17]  # --> ["Alice in wonderland. ", "This is book"]';
 
 # 
+# ## summary ()
+# 
+# .
+# 
+done_testing; }; subtest 'summary ()' => sub { 
+my $aion_format_html = Aion::Format::Html->new;
+::is scalar do {$aion_format_html->summary}, scalar do{.3}, '$aion_format_html->summary  # -> .3';
+
+# 
 # # AUTHOR
 # 
 # Yaroslav O. Kosmina [darviarush@mail.ru](mailto:darviarush@mail.ru)
+# 
+# # LICENSE
+# 
+# ⚖ **GPLv3**
+# 
+# # COPYRIGHT
+# 
+# The Aion::Format::Html module is copyright © 2023 Yaroslav O. Kosmina. Rusland. All rights reserved.
+# # NAME
+# 
+# Aion::Format::Html - 
+# 
+# # SYNOPSIS
+# 
+done_testing; }; subtest 'SYNOPSIS' => sub { 
+use Aion::Format::Html;
+
+my $aion_format_html = Aion::Format::Html->new;
+
+# 
+# # DESCRIPION
+# 
+# .
+# 
+# # SUBROUTINES
+# 
+# 
+# ## split_on_pages ($html, $symbols_on_page, $by)
+# 
+# .
+# 
+done_testing; }; subtest 'split_on_pages ($html, $symbols_on_page, $by)' => sub { 
+my $aion_format_html = Aion::Format::Html->new;
+::is scalar do {$aion_format_html->split_on_pages($html, $symbols_on_page, $by)}, scalar do{.3}, '$aion_format_html->split_on_pages($html, $symbols_on_page, $by)  # -> .3';
+
+# 
+# 
+# # AUTHOR
+# 
+# Yaroslav O. Kosmina [dart@cpan.org](dart@cpan.org)
 # 
 # # LICENSE
 # 

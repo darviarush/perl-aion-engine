@@ -368,7 +368,7 @@ done_testing; }; subtest 'xxS ()' => sub {
 # 
 # # COPYRIGHT
 # 
-# The  is copyright © 2023 by Yaroslav O. Kosmina. Rusland. All rights reserved.
+# Aion::Format is copyright © 2023 by Yaroslav O. Kosmina. Rusland. All rights reserved.
 
 	done_testing;
 };
