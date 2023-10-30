@@ -2,6 +2,8 @@ package Aion::Format::Url;
 
 use common::sense;
 
+use List::Util qw//;
+
 use Exporter qw/import/;
 our @EXPORT = our @EXPORT_OK = grep {
     ref \$Aion::Format::Url::{$_} eq "GLOB"
@@ -40,7 +42,7 @@ sub to_url_params(;$) {
 		join "&", map _escape_url_params($_, $param->{$_}), sort keys %$param
 	}
 	else {
-		join "&", pairmap { _escape_url_params($a, $b) } @$param
+		join "&", List::Util::pairmap { _escape_url_params($a, $b) } @$param
 	}
 }
 
