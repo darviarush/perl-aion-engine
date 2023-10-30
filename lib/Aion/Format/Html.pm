@@ -1461,8 +1461,12 @@ sub safe_html($;$) {
 			\b (?<attr> [a-z][a-z\d]*) ( \s*=\s* ( (?<quot> ") (?<val> [^"]*)" | (?<quot> ') (?<val> [^']*)' | (?<val> \S*) ) )?
 		/gixn) {
 			push @attrs, $+{val} eq ""? " $+{attr}"
-				: join "", " ", $+{attr}, "=", $+{quot}, lc $+{attr} ~~ [qw/src href/]? query::normalize_url($+{val}, $link): $+{val}, $+{quot}
-					if exists $SAFE_ATTR{lc $+{attr}};
+				: join "", " ", $+{attr}, "=", $+{quot},
+					lc $+{attr} ~~ [qw/src href/]
+						? Aion::Format::Url::normalize_url($+{val}, $link)
+						: $+{val},
+					$+{quot}
+				if exists $SAFE_ATTR{lc $+{attr}};
 		}
 
 		push @attrs, " target=_blank" if lc $tag eq "a";
@@ -1470,7 +1474,7 @@ sub safe_html($;$) {
 		"<$tag@attrs>"
 	};
 
-	s{<(/?)([a-z][a-z\d:-]*)([^<>]*)>|<!--(?:.*?)-->}{ $f->() }igse;
+	s{<(/\s*)?([a-z][a-z\d:-]*)([^<>]*)>|<!--(?:.*?)-->}{ $f->() }igse;
 
 	$_
 }
@@ -1483,18 +1487,18 @@ __END__
 
 =head1 NAME
 
-Aion::Format::Html - a utilities for format HTML-documents
+Aion::Format::Html - Perl extension for formatting HTML
 
 =head1 SYNOPSIS
 
 	use Aion::Format::Html;
 	
-	from_html "&excl;"  # => !
+	from_html "<b>&excl;</b>"  # => !
 	to_html "<a>"       # => &lt;a&gt;
 
 =head1 DESCRIPION
 
-A utilities for format HTML-documents.
+Perl extension for formatting HTML-documents.
 
 =head1 SUBROUTINES
 
@@ -1515,7 +1519,7 @@ Cuts off dangerous and unknown tags from html, and unknown attributes from known
 	safe_html "-<em>-</em><br>-" # => -<em>-</em><br>-
 	safe_html "-<em onclick='  '>-</em><br onmouseout=1>-" # => -<em>-</em><br>-
 	safe_html "-<xx24>-</xx24>" # => --
-	safe_html "-< applet >-</ applet >" # => --
+	safe_html "-< applet >-</ applet >" # => -< applet >-
 
 =head2 split_on_pages ($html, $symbols_on_page, $by)
 
@@ -1523,50 +1527,9 @@ Breaks text into pages taking into account html tags.
 
 	[split_on_pages "Alice in wonderland. This is book", 17]  # --> ["Alice in wonderland. ", "This is book"]
 
-=head2 summary ()
-
-.
-
-	my $aion_format_html = Aion::Format::Html->new;
-	$aion_format_html->summary  # -> .3
-
 =head1 AUTHOR
 
 Yaroslav O. Kosmina LL<mailto:darviarush@mail.ru>
-
-=head1 LICENSE
-
-⚖ B<GPLv3>
-
-=head1 COPYRIGHT
-
-The Aion::Format::Html module is copyright © 2023 Yaroslav O. Kosmina. Rusland. All rights reserved.
-=head1 NAME
-
-Aion::Format::Html - 
-
-=head1 SYNOPSIS
-
-	use Aion::Format::Html;
-	
-	my $aion_format_html = Aion::Format::Html->new;
-
-=head1 DESCRIPION
-
-.
-
-=head1 SUBROUTINES
-
-=head2 split_on_pages ($html, $symbols_on_page, $by)
-
-.
-
-	my $aion_format_html = Aion::Format::Html->new;
-	$aion_format_html->split_on_pages($html, $symbols_on_page, $by)  # -> .3
-
-=head1 AUTHOR
-
-Yaroslav O. Kosmina LL<mailto:dart@cpan.org>
 
 =head1 LICENSE
 

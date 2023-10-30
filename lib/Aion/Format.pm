@@ -3,7 +3,7 @@ use 5.22.0;
 no strict; no warnings; no diagnostics;
 use common::sense;
 
-our $VERSION = "0.0.0-prealpha";
+our $VERSION = "0.0.1";
 
 require POSIX;
 require Term::ANSIColor;
@@ -369,11 +369,11 @@ __END__
 
 =head1 NAME
 
-Aion::Format - a utilities for format numbers, colorizing output and so on
+Aion::Format - Perl extension for formatting numbers, colorizing output and so on
 
 =head1 VERSION
 
-0.0.0-prealpha
+0.0.1
 
 =head1 SYNOPSIS
 
@@ -386,9 +386,9 @@ Aion::Format - a utilities for format numbers, colorizing output and so on
 
 =head1 DESCRIPTION
 
-A utilities for format numbers, colorizing output and so on.
+A utilities for formatting numbers, colorizing output and so on.
 
-=head1 SUBROUTINES/METHODS
+=head1 SUBROUTINES
 
 =head2 coloring ($format, @params)
 
@@ -550,6 +550,8 @@ Separator by default is no-break space. Set separator and decimal point same as:
 	num [1000, "#"]         		# => 1#000
 	num [-1000.3003003, "_", ","]   # => -1_000,3003003
 
+See also C<Number::Format>.
+
 =head2 rim ($number)
 
 Translate positive integers to B<roman numerals>.
@@ -566,6 +568,30 @@ B<roman numerals> after 1000:
 	rim 49_000      # => XLIX M
 	rim 49_000_000  # => XLIX M M
 	rim 49_009_555  # => XLIX IX DLV
+
+See also:
+
+=over
+
+=item * C<Roman> is simple converter.
+
+=item * C<Math::Roman> is another converter.
+
+=item * C<Convert::Number::Roman> is OOP interface.
+
+=item * C<Number::Convert::Roman> is another OOP interface.
+
+=item * C<Text::Roman> convert standart and milhar roman numbers.
+
+=item * C<Roman::Unicode> use digits ↁ (5 000), ↂ (1000), and so on.
+
+=item * C<Acme::Roman> added support roman numerals in perl code (C<< I + II -E<gt> III >>), but use C<+>, C<-> and C<*> operations only.
+
+=item * C<Date::Roman> is Perl OO extension for handling roman style dates, but with arabic numbers (id 3 702).
+
+=item * C<DateTime::Format::Roman> is roman date formatter, but with arabic numbers (5 Kal Jun 2003).
+
+=back
 
 =head2 round ($number, $decimal)
 

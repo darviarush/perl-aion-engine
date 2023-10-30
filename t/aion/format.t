@@ -1,10 +1,10 @@
 use common::sense; use open qw/:std :utf8/; use Test::More 0.98; sub _mkpath_ { my ($p) = @_; length($`) && !-e $`? mkdir($`, 0755) || die "mkdir $`: $!": () while $p =~ m!/!g; $p } BEGIN { use Scalar::Util qw//; use Carp qw//; $SIG{__DIE__} = sub { my ($s) = @_; if(ref $s) { $s->{STACKTRACE} = Carp::longmess "?" if "HASH" eq Scalar::Util::reftype $s; die $s } else {die Carp::longmess defined($s)? $s: "undef" }}; my $t = `pwd`; chop $t; $t .= '/' . __FILE__; my $s = '/tmp/.liveman/perl-aion-format!aion!format/'; `rm -fr '$s'` if -e $s; chdir _mkpath_($s) or die "chdir $s: $!"; open my $__f__, "<:utf8", $t or die "Read $t: $!"; read $__f__, $s, -s $__f__; close $__f__; while($s =~ /^#\@> (.*)\n((#>> .*\n)*)#\@< EOF\n/gm) { my ($file, $code) = ($1, $2); $code =~ s/^#>> //mg; open my $__f__, ">:utf8", _mkpath_($file) or die "Write $file: $!"; print $__f__ $code; close $__f__; } } # # NAME
 # 
-# Aion::Format - a utilities for format numbers, colorizing output and so on
+# Aion::Format - Perl extension for formatting numbers, colorizing output and so on
 # 
 # # VERSION
 # 
-# 0.0.0-prealpha
+# 0.0.1
 # 
 # # SYNOPSIS
 # 
@@ -19,9 +19,9 @@ use Aion::Format;
 # 
 # # DESCRIPTION
 # 
-# A utilities for format numbers, colorizing output and so on.
+# A utilities for formatting numbers, colorizing output and so on.
 # 
-# # SUBROUTINES/METHODS
+# # SUBROUTINES
 # 
 # ## coloring ($format, @params)
 # 
@@ -197,6 +197,7 @@ done_testing; }; subtest 'num ($number)' => sub {
 ::is scalar do {num [-1000.3003003, "_", ","]}, "-1_000,3003003", 'num [-1000.3003003, "_", ","]   # => -1_000,3003003';
 
 # 
+# See also `Number::Format`.
 # 
 # ## rim ($number)
 # 
@@ -218,6 +219,18 @@ done_testing; }; subtest 'rim ($number)' => sub {
 ::is scalar do {rim 49_000_000}, "XLIX M M", 'rim 49_000_000  # => XLIX M M';
 ::is scalar do {rim 49_009_555}, "XLIX IX DLV", 'rim 49_009_555  # => XLIX IX DLV';
 
+# 
+# See also:
+# 
+# * `Roman` is simple converter.
+# * `Math::Roman` is another converter.
+# * `Convert::Number::Roman` is OOP interface.
+# * `Number::Convert::Roman` is another OOP interface.
+# * `Text::Roman` convert standart and milhar roman numbers.
+# * `Roman::Unicode` use digits ↁ (5 000), ↂ (1000), and so on.
+# * `Acme::Roman` added support roman numerals in perl code (`I + II -> III`), but use `+`, `-` and `*` operations only.
+# * `Date::Roman` is Perl OO extension for handling roman style dates, but with arabic numbers (id 3 702).
+# * `DateTime::Format::Roman` is roman date formatter, but with arabic numbers (5 Kal Jun 2003).
 # 
 # ## round ($number, $decimal)
 # 

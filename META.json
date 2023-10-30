@@ -1,0 +1,82 @@
+{
+   "abstract" : "Perl extension for formatting numbers, colorizing output and so on",
+   "author" : [
+      "Yaroslav O. Kosmina LL<mailto:dart@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Minilla/v3.1.19, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "gpl_3"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : 2
+   },
+   "name" : "Aion-Format",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "xt",
+         "inc",
+         "share",
+         "eg",
+         "examples",
+         "author",
+         "builder"
+      ]
+   },
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build::Tiny" : "0.035"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Data::Printer" : "1.000004",
+            "Liveman" : "1.0",
+            "Minilla" : "v3.1.19",
+            "Test::CPAN::Meta" : "0",
+            "Test::MinimumVersion::Fast" : "0.04",
+            "Test::PAUSE::Permissions" : "0.07",
+            "Test::Pod" : "1.41",
+            "Test::Spellunker" : "v0.2.7"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Data::Printer" : "0",
+            "JSON::XS" : "4.03",
+            "POSIX" : "0",
+            "Term::ANSIColor" : "0",
+            "common::sense" : "0",
+            "perl" : "v5.22.0"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0.98"
+         }
+      }
+   },
+   "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/darviarush/perl-aion-format/issues"
+      },
+      "homepage" : "https://github.com/darviarush/perl-aion-format",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/darviarush/perl-aion-format.git",
+         "web" : "https://github.com/darviarush/perl-aion-format"
+      }
+   },
+   "version" : "0.0.0",
+   "x_authority" : "cpan:DART",
+   "x_contributors" : [
+      "Yaroslav O. Kosmina <dart@cpan.org>",
+      "Yaroslav O. Kosmina <darviarush@mail.ru>"
+   ],
+   "x_serialization_backend" : "JSON::PP version 4.16",
+   "x_static_install" : 1
+}

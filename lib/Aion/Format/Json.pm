@@ -31,7 +31,7 @@ __END__
 
 =head1 NAME
 
-Aion::Format::Json - 
+Aion::Format::Json - Perl extension for formatting JSON
 
 =head1 SYNOPSIS
 

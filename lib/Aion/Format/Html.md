@@ -7,7 +7,7 @@ Aion::Format::Html - Perl extension for formatting HTML
 ```perl
 use Aion::Format::Html;
 
-from_html "&excl;"  # => !
+from_html "<b>&excl;</b>"  # => !
 to_html "<a>"       # => &lt;a&gt;
 ```
 
@@ -37,7 +37,7 @@ Cuts off dangerous and unknown tags from html, and unknown attributes from known
 safe_html "-<em>-</em><br>-" # => -<em>-</em><br>-
 safe_html "-<em onclick='  '>-</em><br onmouseout=1>-" # => -<em>-</em><br>-
 safe_html "-<xx24>-</xx24>" # => --
-safe_html "-< applet >-</ applet >" # => --
+safe_html "-< applet >-</ applet >" # => -< applet >-
 ```
 
 ## split_on_pages ($html, $symbols_on_page, $by)

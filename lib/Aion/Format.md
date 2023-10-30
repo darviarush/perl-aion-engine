@@ -4,7 +4,7 @@ Aion::Format - Perl extension for formatting numbers, colorizing output and so o
 
 # VERSION
 
-0.0.0-prealpha
+0.0.1
 
 # SYNOPSIS
 
@@ -21,7 +21,7 @@ trappout { printcolor "#red ~> #r\n" } # => \e[31m ~> \e[0m\n
 
 A utilities for formatting numbers, colorizing output and so on.
 
-# SUBROUTINES/METHODS
+# SUBROUTINES
 
 ## coloring ($format, @params)
 
@@ -220,7 +220,17 @@ rim 49_000_000  # => XLIX M M
 rim 49_009_555  # => XLIX IX DLV
 ```
 
-See also 
+See also:
+
+* `Roman` is simple converter.
+* `Math::Roman` is another converter.
+* `Convert::Number::Roman` is OOP interface.
+* `Number::Convert::Roman` is another OOP interface.
+* `Text::Roman` convert standart and milhar roman numbers.
+* `Roman::Unicode` use digits ↁ (5 000), ↂ (1000), and so on.
+* `Acme::Roman` added support roman numerals in perl code (`I + II -> III`), but use `+`, `-` and `*` operations only.
+* `Date::Roman` is Perl OO extension for handling roman style dates, but with arabic numbers (id 3 702).
+* `DateTime::Format::Roman` is roman date formatter, but with arabic numbers (5 Kal Jun 2003).
 
 ## round ($number, $decimal)
 
