@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/darviarush/perl-aion-format/actions/workflows/test.yml/badge.svg)](https://github.com/darviarush/perl-aion-format/actions)
+[![Actions Status](https://github.com/darviarush/perl-aion-format/actions/workflows/test.yml/badge.svg)](https://github.com/darviarush/perl-aion-format/actions) [![MetaCPAN Release](https://badge.fury.io/pl/Aion-Format.svg)](https://metacpan.org/release/Aion-Format)
 # NAME
 
 Aion::Format - Perl extension for formatting numbers, colorizing output and so on
@@ -294,6 +294,8 @@ Trap for STDERR.
 trapperr { print STDERR 123 }  # => 123
 ```
 
+See also `IO::Capture::Stderr`.
+
 ## trappout (&block)
 
 Trap for STDOUT.
@@ -301,6 +303,8 @@ Trap for STDOUT.
 ```perl
 trappout { print 123 }  # => 123
 ```
+
+See also `IO::Capture::Stdout`.
 
 ## TiB ()
 
@@ -374,7 +378,7 @@ xxS  # -> 255
 
 # AUTHOR
 
-Yaroslav O. Kosmina [dart@cpan.org](mailto:dart@cpan.org)
+Yaroslav O. Kosmina [dart@cpan.org](dart@cpan.org)
 
 # LICENSE
 

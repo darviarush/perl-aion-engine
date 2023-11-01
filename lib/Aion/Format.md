@@ -293,6 +293,8 @@ Trap for STDERR.
 trapperr { print STDERR 123 }  # => 123
 ```
 
+See also `IO::Capture::Stderr`.
+
 ## trappout (&block)
 
 Trap for STDOUT.
@@ -300,6 +302,8 @@ Trap for STDOUT.
 ```perl
 trappout { print 123 }  # => 123
 ```
+
+See also `IO::Capture::Stdout`.
 
 ## TiB ()
 
@@ -373,7 +377,7 @@ xxS  # -> 255
 
 # AUTHOR
 
-Yaroslav O. Kosmina [dart@cpan.org](mailto:dart@cpan.org)
+Yaroslav O. Kosmina [dart@cpan.org](dart@cpan.org)
 
 # LICENSE
 
