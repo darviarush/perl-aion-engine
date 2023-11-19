@@ -13,6 +13,9 @@ our @EXPORT = our @EXPORT_OK = grep {
 	*{$Aion::Format::{$_}}{CODE} && !/^(_|(NaN|import)\z)/n
 } keys %Aion::Format::;
 
+
+#@category Вывод структур
+
 use DDP {
 	colored => 1,
 	class => {
@@ -85,6 +88,9 @@ sub accesslog(@) {
 sub errorlog(@) {
 	print STDERR "[", POSIX::strftime("%F %T", localtime), "] ", coloring @_;
 }
+
+
+#@category Преобразования
 
 # Проводит соответствия
 #
