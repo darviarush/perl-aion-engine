@@ -5,7 +5,7 @@ Aion::Format - Perl extension for formatting numbers, colorizing output and so o
 
 # VERSION
 
-0.0.2
+0.0.3
 
 # SYNOPSIS
 
@@ -374,11 +374,29 @@ S - small.
 xxS  # -> 255
 ```
 
+## to_str (;$scalar)
+
+Converts to string perl without interpolation.
+
+```perl
+to_str "a'\n" # => 'a\\'\n'
+[map to_str, "a'\n"] # --> ["'a\\'\n'"]
+```
+
+## from_str (;$one_quote_str)
+
+Converts from string perl without interpolation.
+
+```perl
+from_str "'a\\'\n'"  # => a'\n
+[map from_str, "'a\\'\n'"]  # --> ["a'\n"]
+```
+
 # SUBROUTINES/METHODS
 
 # AUTHOR
 
-Yaroslav O. Kosmina [dart@cpan.org](dart@cpan.org)
+Yaroslav O. Kosmina <dart@cpan.org>
 
 # LICENSE
 
