@@ -1060,8 +1060,8 @@ our %TOP_CLOSE_TAG = (
 	tbody 		=> _set(qw/table/),
 	tfoot 		=> _set(qw/table/),
 	tr 			=> _set(qw/table thead tbody tfoot caption/),
-	td 			=> _set(qw/table thead tbody tfoot caption td/),
-	th 			=> _set(qw/table thead tbody tfoot caption th/),
+	td 			=> _set(qw/table thead tbody tfoot caption/),
+	th 			=> _set(qw/table thead tbody tfoot caption/),
 	dt			=> _set(qw/dl/),
 	dd			=> _set(qw/dl/),
 	rt			=> _set(qw/ruby/),
@@ -1070,7 +1070,7 @@ our %TOP_CLOSE_TAG = (
 	optgroup	=> _set(qw/select/),
 );
 
-# <tr> закрывает открытые <td> и <th>
+# <tr> закрывает открытые <td> и <th> и <tr>
 our %TOP_NEW_TAG = (
 	head		=> _set(qw/body/),
 	tr			=> _set(qw/tr thead tbody tfoot/),
@@ -1091,37 +1091,41 @@ our %TOP_NEW_TAG = (
 	optgroup	=> _set(qw/optgroup/),
 );
 
-# Забрасывает тег в стек
-sub _in_tag(@) {
+# Забрасывает тег в стек и возвращает закрытые
+sub in_tag(\@$$) {
 	my ($S, $tag, $atag) = @_;
-	
+
 	# Это одиночный тег - ничего не делаем
 	return if exists $SINGLE_TAG{$tag};
-	
+
 	# Выбрасываем из стека предыдущий тег
-	pop @$S if @$S and exists $TOP_NEW_TAG{ $S->[$#$S][0] }{$tag};
-	
+	my @ret;
+	push @ret, pop @$S while @$S and exists ($TOP_NEW_TAG{ $S->[$#$S][0] })->{$tag};
+
 	push @$S, [$tag, $atag];
+
+	@ret
 }
 
-# Выбрасывает тег из стека
-# Неявно использует $_
-sub _out_tag(@) {
+# Выбрасывает тег из стека. Возвращает выдавленные им и выбрасывает исключение, если такого в стеке нет
+sub out_tag(\@$) {
 	my ($S, $tag) = @_;
-	
+
 	# Это одиночный тег - ничего не делаем
-	return 1 if exists $SINGLE_TAG{$tag};
-		
+	return if exists $SINGLE_TAG{$tag};
+
 	# закрываем предыдущий, если нужно
-	pop @$S if @$S and exists $TOP_CLOSE_TAG{$S->[$#$S][0]}{$tag};
-	
+	my @ret;
+	push @ret, pop @$S while @$S and exists ($TOP_CLOSE_TAG{$S->[$#$S][0]})->{$tag};
+
+	die "Stack is empty!" unless @$S;
+
 	# тег равен закрывающему
-	pop @$S, return 1 if @$S and $S->[$#$S][0] eq $tag;
-	
-	# </p> превращаем в <p></p>
-	$_ = "<p></p>", return 1 if $tag eq "p";
-	
-	return 0;
+	die "<$S->[$#$S][0]> in stack ne </$tag>!" if $S->[$#$S][0] ne $tag;
+
+	push @ret, pop @$S;
+
+	@ret
 }
 
 =pod
@@ -1162,8 +1166,14 @@ sub split_on_pages(@) {
 	)}xiu, $html) {
 
 		if(/^&/) {$c++} 	# html-символ
-		elsif(/^<\/\s*([a-z]\w*)/) { next unless _out_tag \@S, lc $1 }	# закрывающий тег
-		elsif(/^<([a-z]\w*)/) { _in_tag \@S, lc $1, $_ }	# тег
+		elsif(/^<\/\s*([a-z]\w*)/) { # закрывающий тег
+			my $tag = lc $1;
+			eval { out_tag @S, $tag };
+			next if $@;
+			# </p> превращаем в <p></p>
+			$_ = "<p></p>" if $tag eq "p";
+		}
+		elsif(/^<([a-z]\w*)/) { in_tag @S, lc $1, $_ }	# тег
 		else {$c += length}	# текст
 
 		push @page, $_; # накапливаем символы в массиве @page

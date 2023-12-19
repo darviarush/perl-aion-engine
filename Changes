@@ -2,6 +2,10 @@ Revision history for Perl extension Aion::Str::Util
 
 {{$NEXT}}
 
+0.0.4 2023-12-19T15:41:36Z
+
+    - add functions in_tag and out_tag, for html-stack
+
 0.0.3 2023-11-15T10:27:21Z
 
     - add subroutines to_str and from_str
