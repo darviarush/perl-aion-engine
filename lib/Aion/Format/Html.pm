@@ -1095,8 +1095,8 @@ our %TOP_NEW_TAG = (
 sub in_tag(\@$$) {
 	my ($S, $tag, $atag) = @_;
 
-	# Это одиночный тег - ничего не делаем
-	return if exists $SINGLE_TAG{$tag};
+	# Это одиночный тег - выталкиваем его сразу
+	return [$tag, $atag] if exists $SINGLE_TAG{$tag};
 
 	# Выбрасываем из стека предыдущий тег
 	my @ret;
@@ -1111,8 +1111,8 @@ sub in_tag(\@$$) {
 sub out_tag(\@$) {
 	my ($S, $tag) = @_;
 
-	# Это одиночный тег - ничего не делаем
-	return if exists $SINGLE_TAG{$tag};
+	# Это одиночный тег - он не может быть закрывающим
+	die "</$tag> is a single tag - it cannot be a closing tag" if exists $SINGLE_TAG{$tag};
 
 	# закрываем предыдущий, если нужно
 	my @ret;

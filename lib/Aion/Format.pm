@@ -328,9 +328,8 @@ sub kb_size($) {
 # Оставляет $n цифр до и после точки: 10.11 = 10, 0.00012 = 0.00012, 1.2345 = 1.2, если $n = 2
 sub sround($;$) {
 	my ($number, $digits) = @_;
-	require Math::BigFloat;
-	my $num = Math::BigFloat->new($number);
 	$digits //= 2;
+	my $num = sprintf("%.100f", $number);
 	$num =~ /^-?0?(\d*)\.(0*)[1-9]/;
 	return "" . round($num, $digits + length $2) if length($1) == 0;
 	my $k = $digits - length $1;
