@@ -1095,12 +1095,12 @@ our %TOP_NEW_TAG = (
 sub in_tag(\@$$) {
 	my ($S, $tag, $atag) = @_;
 
-	# Это одиночный тег - выталкиваем его сразу
-	return [$tag, $atag] if exists $SINGLE_TAG{$tag};
-
 	# Выбрасываем из стека предыдущий тег
 	my @ret;
-	push @ret, pop @$S while @$S and exists ($TOP_NEW_TAG{ $S->[$#$S][0] })->{$tag};
+	push @ret, pop @$S while @$S and (
+		exists ($TOP_NEW_TAG{ $S->[$#$S][0] })->{$tag}
+		|| exists $SINGLE_TAG{ $S->[$#$S][0] }
+	);
 
 	push @$S, [$tag, $atag];
 
@@ -1116,7 +1116,10 @@ sub out_tag(\@$) {
 
 	# закрываем предыдущий, если нужно
 	my @ret;
-	push @ret, pop @$S while @$S and exists ($TOP_CLOSE_TAG{$S->[$#$S][0]})->{$tag};
+	push @ret, pop @$S while @$S and (
+		exists ($TOP_CLOSE_TAG{$S->[$#$S][0]})->{$tag}
+		|| exists $SINGLE_TAG{ $S->[$#$S][0] }
+	);
 
 	die "Stack is empty!" unless @$S;
 
