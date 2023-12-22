@@ -1091,18 +1091,21 @@ our %TOP_NEW_TAG = (
 	optgroup	=> _set(qw/optgroup/),
 );
 
+# Проверяет, что тег – одиночный
+sub is_single_tag(;$) {
+	exists $SINGLE_TAG{$_[0] // $_}
+}
+
 # Забрасывает тег в стек и возвращает закрытые
 sub in_tag(\@$$) {
 	my ($S, $tag, $atag) = @_;
 
 	# Выбрасываем из стека предыдущий тег
 	my @ret;
-	push @ret, pop @$S while @$S and (
-		exists ($TOP_NEW_TAG{ $S->[$#$S][0] })->{$tag}
-		|| exists $SINGLE_TAG{ $S->[$#$S][0] }
-	);
+	push @ret, pop @$S while @$S and
+		exists ($TOP_NEW_TAG{ $S->[$#$S][0] })->{$tag};
 
-	push @$S, [$tag, $atag];
+	push @$S, [$tag, $atag] unless exists $SINGLE_TAG{$tag};
 
 	@ret
 }
@@ -1116,10 +1119,8 @@ sub out_tag(\@$) {
 
 	# закрываем предыдущий, если нужно
 	my @ret;
-	push @ret, pop @$S while @$S and (
-		exists ($TOP_CLOSE_TAG{$S->[$#$S][0]})->{$tag}
-		|| exists $SINGLE_TAG{ $S->[$#$S][0] }
-	);
+	push @ret, pop @$S while @$S and
+		exists ($TOP_CLOSE_TAG{$S->[$#$S][0]})->{$tag};
 
 	die "Stack is empty!" unless @$S;
 

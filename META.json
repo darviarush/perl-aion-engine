@@ -73,7 +73,7 @@
          "web" : "https://github.com/darviarush/perl-aion-format"
       }
    },
-   "version" : "0.0.6",
+   "version" : "0.0.7",
    "x_authority" : "cpan:DART",
    "x_contributors" : [
       "Yaroslav O. Kosmina <dart@cpan.org>",
