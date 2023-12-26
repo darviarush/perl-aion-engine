@@ -1047,7 +1047,7 @@ hearts => 9829,
 diams => 9830,
 );
 
-sub _set(@) { map { $_ => 1 } @_ }
+sub _set(@) { +{ map { $_ => 1 } @_ } }
 
 # Теги не имеющие закрывающего тега
 our %SINGLE_TAG = _set qw/area base br col embed hr img input link meta param source track wbr/;
@@ -1103,7 +1103,7 @@ sub in_tag(\@$$) {
 	# Выбрасываем из стека предыдущий тег
 	my @ret;
 	push @ret, pop @$S while @$S and
-		exists ($TOP_NEW_TAG{ $S->[$#$S][0] })->{$tag};
+		($TOP_NEW_TAG{ $S->[$#$S][0] })->{$tag};
 
 	push @$S, [$tag, $atag] unless exists $SINGLE_TAG{$tag};
 
@@ -1120,7 +1120,7 @@ sub out_tag(\@$) {
 	# закрываем предыдущий, если нужно
 	my @ret;
 	push @ret, pop @$S while @$S and
-		exists ($TOP_CLOSE_TAG{$S->[$#$S][0]})->{$tag};
+		($TOP_CLOSE_TAG{$S->[$#$S][0]})->{$tag};
 
 	die "Stack is empty!" unless @$S;
 

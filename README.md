@@ -5,7 +5,7 @@ Aion::Format - Perl extension for formatting numbers, colorizing output and so o
 
 # VERSION
 
-0.0.7
+0.0.8
 
 # SYNOPSIS
 
