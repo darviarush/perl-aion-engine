@@ -1050,7 +1050,7 @@ diams => 9830,
 sub _set(@) { +{ map { $_ => 1 } @_ } }
 
 # Теги не имеющие закрывающего тега
-our %SINGLE_TAG = _set qw/area base br col embed hr img input link meta param source track wbr/;
+our %SINGLE_TAG = %{ _set qw/area base br col embed hr img input link meta param source track wbr/ };
 
 # <li> закрывается, если приходит </ol> или </ul>
 our %TOP_CLOSE_TAG = (

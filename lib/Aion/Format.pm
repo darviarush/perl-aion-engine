@@ -3,7 +3,7 @@ use 5.22.0;
 no strict; no warnings; no diagnostics;
 use common::sense;
 
-our $VERSION = "0.0.8";
+our $VERSION = "0.0.9";
 
 require POSIX;
 require Term::ANSIColor;
@@ -394,7 +394,7 @@ Aion::Format - Perl extension for formatting numbers, colorizing output and so o
 
 =head1 VERSION
 
-0.0.8
+0.0.9
 
 =head1 SYNOPSIS
 
