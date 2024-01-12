@@ -1122,7 +1122,7 @@ sub out_tag(\@$) {
 	push @ret, pop @$S while @$S and
 		($TOP_CLOSE_TAG{$S->[$#$S][0]})->{$tag};
 
-	die "Stack is empty!" unless @$S;
+	die "</$tag>, but stack is empty!" unless @$S;
 
 	# тег равен закрывающему
 	die "<$S->[$#$S][0]> in stack ne </$tag>!" if $S->[$#$S][0] ne $tag;
